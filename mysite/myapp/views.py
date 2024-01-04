@@ -17,9 +17,14 @@ def dashboard(request):
     expenseForm = LedgerExpenseModelForm()
 
     incomeSum = LedgerIncome.objects.aggregate(Sum('receiptNumber'))
+    expenseSum = LedgerExpense.objects.aggregate(Sum('expenseNumber'))
+
+    profit = incomeSum['receiptNumber__sum'] - expenseSum['expenseNumber__sum']
 
     context = {
-        'incomeSum': incomeSum
+        'incomeSum': incomeSum,
+        'expenseSum' : expenseSum,
+        'profit' : profit,
     }
 
     return render(request, "myapp/dashboard.html", context)

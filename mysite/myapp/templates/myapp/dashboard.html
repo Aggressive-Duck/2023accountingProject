@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="d-flex flex-column" style="padding: 20px 5% 16px 5%; background-color: #dee2e6; width: 100%; overflow: auto">
-        <h3>ok{{ incomeSum }}</h3>
+        <div class="d-flex flex-row justify-content-between" style="">
+            <div></div>
+        </div>
+        <h3>ok{{ incomeSum.receiptNumber__sum }}</h3>
+        <h3>{{ expenseSum.expenseNumber__sum }}</h3>
+    <h3>{{ profit }}</h3>
     </div>
 {% endblock  %}

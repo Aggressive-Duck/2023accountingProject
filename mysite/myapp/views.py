@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import LedgerIncomeModelForm, LedgerExpenseModelForm
 from .models import LedgerIncome, LedgerExpense
 from django.db.models import Sum
+import json
 
 
 # Create your views here.
@@ -21,10 +22,45 @@ def dashboard(request):
 
     profit = incomeSum['receiptNumber__sum'] - expenseSum['expenseNumber__sum']
 
+    incomeLabels = []
+    incomeNumber = []
+
+    expenseLabels = []
+    expenseNumber = []
+
+
+    expenseSumInt = 0
+
+    for i in range(1):
+        expenseLimit = 30000
+        expenseSumInt = expenseSum["expenseNumber__sum"]
+        expenseLimitPercentage = (expenseSumInt / expenseLimit) * 100
+        expenseLimitPercentage = round(expenseLimitPercentage)
+
+    for index in income:
+        incomeLabels.append(index.receiptType)
+        incomeNumber.append(index.receiptNumber)
+
+    for index in expense:
+        expenseLabels.append(index.expenseType)
+        expenseNumber.append(index.expenseNumber)
+
+    incomeLabelsJson = json.dumps(incomeLabels)
+    incomeNumberJson = json.dumps(incomeNumber)
+
+    expenseLabelsJson = json.dumps(expenseLabels)
+    expenseNumberJson = json.dumps(expenseNumber)
+
     context = {
         'incomeSum': incomeSum,
         'expenseSum' : expenseSum,
         'profit' : profit,
+        'incomeLabels' : incomeLabelsJson,
+        'incomeNumber' : incomeNumberJson,
+        'expenseLabels' : expenseLabelsJson,
+        'expenseNumber' : expenseNumberJson,
+        'expenseLimitPercentage' : expenseLimitPercentage,
+        'expenseLimit' : expenseLimit,
     }
 
     return render(request, "myapp/dashboard.html", context)
